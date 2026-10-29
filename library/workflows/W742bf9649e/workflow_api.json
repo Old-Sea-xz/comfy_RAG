@@ -1,0 +1,75 @@
+{
+  "4": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "INPUT_VIDEO.mp4"
+    }
+  },
+  "3": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "4",
+        0
+      ]
+    }
+  },
+  "1": {
+    "class_type": "FrameInterpolationModelLoader",
+    "inputs": {
+      "model_name": "film_net_fp16.safetensors"
+    }
+  },
+  "9": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 2
+    }
+  },
+  "2": {
+    "class_type": "FrameInterpolate",
+    "inputs": {
+      "interp_model": [
+        "1",
+        0
+      ],
+      "images": [
+        "3",
+        0
+      ],
+      "multiplier": [
+        "9",
+        0
+      ]
+    }
+  },
+  "11": {
+    "class_type": "CM_FloatBinaryOperation",
+    "inputs": {
+      "op": "Mul",
+      "a": [
+        "3",
+        2
+      ],
+      "b": 2.0
+    }
+  },
+  "7": {
+    "class_type": "VHS_VideoCombine",
+    "inputs": {
+      "images": [
+        "2",
+        0
+      ],
+      "frame_rate": [
+        "11",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "video/frame_interpolated",
+      "format": "video/h264-mp4",
+      "pingpong": false,
+      "save_output": true
+    }
+  }
+}

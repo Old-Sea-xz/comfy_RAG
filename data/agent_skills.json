@@ -1,0 +1,34 @@
+{
+  "schema_version": "agent-skills-1",
+  "agents": {
+    "generation_agent": {
+      "version": 1,
+      "role": "Propose typed workflow graph edits.",
+      "required_output": [
+        "skill_ids",
+        "edits",
+        "rationale",
+        "decision_trace",
+        "workflow_composition_assessment"
+      ],
+      "rules": [
+        "Before changing video timing parameters, calculate the complete temporal contract from the current task and graph. Derive target output frames as round(duration_seconds * output_fps), then trace the actual output batch length. Distinguish generated frame count, loader frame_load_cap, sampling stride, transition span, and encoder FPS; a loader cap is not newly generated frames.",
+        "For every multi-video or temporal node, check coupled constraints before execution: loaded batches must cover every referenced index, paired frame operations must receive compatible lengths, and trims, transitions, interpolation, and concatenation must produce the requested final frame count. Change all coupled parameters together rather than repairing one input in isolation.",
+        "Runtime handoff owns media filenames. Do not modify loader filename inputs to solve timing or quality. Modify only declared timing, sampling, transition, generation, or encoding parameters justified by the instruction and current graph."
+      ]
+    },
+    "feedback_agent": {
+      "version": 1,
+      "role": "Evaluate workflow output and execution evidence.",
+      "required_output": [
+        "overall_status",
+        "completion_score",
+        "output_assessment",
+        "dimensions",
+        "blocking_dimensions",
+        "evidence_summary"
+      ],
+      "rules": []
+    }
+  }
+}

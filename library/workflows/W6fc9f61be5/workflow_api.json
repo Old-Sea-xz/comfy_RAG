@@ -1,0 +1,166 @@
+{
+  "34": {
+    "class_type": "DualCLIPLoader",
+    "inputs": {
+      "clip_name1": "clip_l.safetensors",
+      "clip_name2": "t5xxl_fp16.safetensors",
+      "type": "flux",
+      "device": "default"
+    }
+  },
+  "31": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux1-dev-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "32": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
+  "42": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "45": {
+    "class_type": "PulidFluxModelLoader",
+    "inputs": {
+      "pulid_file": "pulid_flux_v0.9.1.safetensors"
+    }
+  },
+  "47": {
+    "class_type": "PulidFluxEvaClipLoader",
+    "inputs": {}
+  },
+  "48": {
+    "class_type": "PulidFluxInsightFaceLoader",
+    "inputs": {
+      "provider": "CUDA"
+    }
+  },
+  "49": {
+    "class_type": "ApplyPulidFlux",
+    "inputs": {
+      "model": [
+        "31",
+        0
+      ],
+      "pulid_flux": [
+        "45",
+        0
+      ],
+      "eva_clip": [
+        "47",
+        0
+      ],
+      "face_analysis": [
+        "48",
+        0
+      ],
+      "image": [
+        "42",
+        0
+      ],
+      "weight": 0.8,
+      "start_at": 0.0,
+      "end_at": 1.0
+    }
+  },
+  "46": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "42",
+        0
+      ],
+      "vae": [
+        "32",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "A formal portrait of the person in an elegant old-master oil painting, seated in a refined European library with warm window light, rich burgundy and gold tones, subtle painterly brushwork, realistic skin texture, detailed facial features, natural expression, sophisticated composition. Preserve the person's identity, facial structure, hairstyle, and important likeness details while transforming the presentation into a timeless artistic portrait.",
+      "clip": [
+        "34",
+        0
+      ]
+    }
+  },
+  "26": {
+    "class_type": "FluxGuidance",
+    "inputs": {
+      "guidance": 30.0,
+      "conditioning": [
+        "23",
+        0
+      ]
+    }
+  },
+  "37": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": [
+        "23",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 1125476660951871,
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 0.55,
+      "model": [
+        "49",
+        0
+      ],
+      "positive": [
+        "26",
+        0
+      ],
+      "negative": [
+        "37",
+        0
+      ],
+      "latent_image": [
+        "46",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "32",
+        0
+      ]
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "portrait_conversion",
+      "images": [
+        "8",
+        0
+      ]
+    }
+  }
+}

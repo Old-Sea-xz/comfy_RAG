@@ -1,0 +1,201 @@
+{
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Flux2-Klein-4b-cartoonization",
+      "images": [
+        "65",
+        0
+      ]
+    }
+  },
+  "61": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "62": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 20,
+      "width": [
+        "100",
+        0
+      ],
+      "height": [
+        "100",
+        1
+      ]
+    }
+  },
+  "63": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 4,
+      "model": [
+        "70",
+        0
+      ],
+      "positive": [
+        "124",
+        0
+      ],
+      "negative": [
+        "122",
+        0
+      ]
+    }
+  },
+  "64": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "73",
+        0
+      ],
+      "guider": [
+        "63",
+        0
+      ],
+      "sampler": [
+        "61",
+        0
+      ],
+      "sigmas": [
+        "62",
+        0
+      ],
+      "latent_image": [
+        "123",
+        0
+      ]
+    }
+  },
+  "65": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "64",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "67": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "photorealistic, live action, realistic skin texture, different identity, changed face, changed hairstyle, changed clothing, changed pose, changed framing, changed background layout, malformed anatomy, extra limbs, text, watermark, blurry, low quality",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "70": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-base-4b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "71": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "72": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    }
+  },
+  "73": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1111443136920027
+    }
+  },
+  "74": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Transform the input photograph into a polished 2D hand-drawn animation frame with clean expressive ink outlines, controlled simplified shapes, flat cel shading, coherent vibrant colors, and consistent illustration detail. Preserve the exact recognizable identity, facial features, expression, hairstyle, clothing silhouette and details, body proportions, pose, camera angle, framing, subject placement, and background composition. Output one complete static cartoon image suitable as a stable image-to-video anchor.",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "76": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "80": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "megapixels": 1,
+      "resolution_steps": 1,
+      "image": [
+        "76",
+        0
+      ]
+    }
+  },
+  "100": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "80",
+        0
+      ]
+    }
+  },
+  "122": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "67",
+        0
+      ],
+      "latent": [
+        "123",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "80",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "124": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "74",
+        0
+      ],
+      "latent": [
+        "123",
+        0
+      ]
+    }
+  }
+}

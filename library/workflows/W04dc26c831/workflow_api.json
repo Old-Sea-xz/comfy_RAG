@@ -1,0 +1,161 @@
+{
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Flux2-Poster-Design",
+      "images": [
+        "65",
+        0
+      ]
+    }
+  },
+  "61": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "62": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 20,
+      "width": [
+        "68",
+        0
+      ],
+      "height": [
+        "69",
+        0
+      ]
+    }
+  },
+  "63": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5,
+      "model": [
+        "70",
+        0
+      ],
+      "positive": [
+        "74",
+        0
+      ],
+      "negative": [
+        "67",
+        0
+      ]
+    }
+  },
+  "64": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "73",
+        0
+      ],
+      "guider": [
+        "63",
+        0
+      ],
+      "sampler": [
+        "61",
+        0
+      ],
+      "sigmas": [
+        "62",
+        0
+      ],
+      "latent_image": [
+        "66",
+        0
+      ]
+    }
+  },
+  "65": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "64",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "66": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": [
+        "68",
+        0
+      ],
+      "height": [
+        "69",
+        0
+      ],
+      "batch_size": 1
+    }
+  },
+  "67": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "blurry lettering, illegible text, misspelled words, cropped title, duplicated typography, watermark, logo, frame, low contrast, cluttered layout",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "68": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 768
+    }
+  },
+  "69": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 1024
+    }
+  },
+  "73": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 0
+    }
+  },
+  "70": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-base-4b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "71": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "72": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "flux2-vae.safetensors"
+    }
+  },
+  "74": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Vertical editorial birthday poster design, exact headline text \"HEDGEHOG DAY\" in large bold cream sans-serif typography at the top, exact slogan text \"SMALL SPIKES, BIG CELEBRATION\" beneath the title, exact credit line text \"A TINY PARTY GUIDE\" at the bottom. Central charming hedgehog wearing a tiny party hat, surrounded by colorful confetti and balloons, joyful celebration scene. Premium contemporary poster layout with clear visual hierarchy, generous negative space around all text, centered composition, warm coral, teal, and butter-yellow color palette, subtle early-2000s digicam flash texture, crisp graphic design, print-ready book-cover composition, highly legible integrated typography.",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  }
+}

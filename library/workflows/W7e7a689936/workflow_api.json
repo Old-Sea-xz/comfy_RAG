@@ -1,0 +1,242 @@
+{
+  "1": {
+    "class_type": "VHS_LoadVideo",
+    "inputs": {
+      "video": "INPUT_VIDEO.mp4",
+      "force_rate": 8,
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "format": "AnimateDiff"
+    }
+  },
+  "2": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "3": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "image": [
+        "2",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "width": 1024,
+      "height": 576,
+      "crop": "disabled"
+    }
+  },
+  "4": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "5": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "lora_name": "Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors",
+      "strength_model": 1.0
+    }
+  },
+  "6": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "5",
+        0
+      ],
+      "lora_name": "Qwen-Image-Edit-2509-Relight.safetensors",
+      "strength_model": 1.0
+    }
+  },
+  "7": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "model": [
+        "6",
+        0
+      ],
+      "shift": 3.0
+    }
+  },
+  "8": {
+    "class_type": "CFGNorm",
+    "inputs": {
+      "model": [
+        "7",
+        0
+      ],
+      "strength": 1.0,
+      "pre_cfg": false
+    }
+  },
+  "9": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "11": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "3",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ],
+      "image1": [
+        "3",
+        0
+      ],
+      "prompt": "Relight this exact bedroom as a convincing deep night scene. Soft cool blue moonlight enters from the unseen window behind and above the children, creating a gentle directional rim light and natural cool shadows. The room is dark, with only subtle moonlight and a faint cool laptop-screen glow illuminating the children's faces. Remove all warm daylight and bright daytime ambience. Preserve the exact children, identities, expressions, laptop, bedding, pillows, clothing, body positions, geometry, composition, camera viewpoint, and background. Change illumination, shadows, highlights, color temperature, exposure, and atmosphere only."
+    }
+  },
+  "13": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "prompt": ""
+    }
+  },
+  "14": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "8",
+        0
+      ],
+      "seed": 19520261004,
+      "steps": 4,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "13",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ],
+      "denoise": 1.0
+    }
+  },
+  "15": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "14",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ]
+    }
+  },
+  "16": {
+    "class_type": "ColorMatch",
+    "inputs": {
+      "image_ref": [
+        "15",
+        0
+      ],
+      "image_target": [
+        "1",
+        0
+      ],
+      "method": "reinhard"
+    }
+  },
+  "17": {
+    "class_type": "Color Correct (mtb)",
+    "inputs": {
+      "image": [
+        "16",
+        0
+      ],
+      "clamp": true,
+      "gamma": 1.08,
+      "contrast": 1.08,
+      "exposure": -0.55,
+      "offset": 0.0,
+      "hue": 0.0,
+      "saturation": 0.78,
+      "value": 1.0
+    }
+  },
+  "18": {
+    "class_type": "CR Color Tint",
+    "inputs": {
+      "image": [
+        "17",
+        0
+      ],
+      "strength": 0.2,
+      "mode": "cool",
+      "tint_color_hex": "#7FA8D8"
+    }
+  },
+  "19": {
+    "class_type": "VHS_VideoCombine",
+    "inputs": {
+      "images": [
+        "18",
+        0
+      ],
+      "frame_rate": 8.0,
+      "loop_count": 0,
+      "filename_prefix": "lighting_edit_qwen_relight",
+      "format": "video/h264-mp4",
+      "pingpong": false,
+      "save_output": true
+    }
+  }
+}

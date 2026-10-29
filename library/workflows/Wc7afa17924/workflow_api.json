@@ -1,0 +1,55 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "repainting_controlnet_ip2p",
+      "images": [
+        "14",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "LoadImageMask",
+    "inputs": {
+      "image": "INPUT_MASK.png",
+      "channel": "red"
+    }
+  },
+  "14": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "1",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "mask": [
+        "12",
+        0
+      ],
+      "source": [
+        "15",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "Image Rotate Hue",
+    "inputs": {
+      "hue_shift": 0.333,
+      "image": [
+        "1",
+        0
+      ]
+    }
+  }
+}

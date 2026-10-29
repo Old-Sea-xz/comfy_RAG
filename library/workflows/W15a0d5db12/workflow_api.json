@@ -1,0 +1,128 @@
+{
+  "39": {
+    "class_type": "CLIPVisionLoader",
+    "inputs": {
+      "clip_name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "text, watermark",
+      "clip": [
+        "40",
+        1
+      ]
+    }
+  },
+  "40": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0.safetensors"
+    }
+  },
+  "38": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "car, city, anime style",
+      "clip": [
+        "40",
+        1
+      ]
+    }
+  },
+  "41": {
+    "class_type": "IPAdapterModelLoader",
+    "inputs": {
+      "ipadapter_file": "ip-adapter-plus_sdxl_vit-h.safetensors"
+    }
+  },
+  "42": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "43": {
+    "class_type": "AV_IPAdapter",
+    "inputs": {
+      "ip_adapter_name": "ip-adapter-plus_sdxl_vit-h.safetensors",
+      "clip_name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+      "model": [
+        "40",
+        0
+      ],
+      "image": [
+        "38",
+        0
+      ],
+      "weight": 0.8,
+      "noise": 0.0,
+      "start_at": 0.0,
+      "end_at": 1.0,
+      "weight_type": "style transfer (SDXL only)",
+      "clip_vision_opt": [
+        "39",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 900749379955168,
+      "steps": 26,
+      "cfg": 8,
+      "sampler_name": "dpmpp_3m_sde_gpu",
+      "scheduler": "exponential",
+      "denoise": 1.0,
+      "model": [
+        "43",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "42",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "40",
+        2
+      ]
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "8",
+        0
+      ]
+    }
+  }
+}

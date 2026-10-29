@@ -1,0 +1,39 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "2": {
+    "class_type": "FaceRestoreModelLoader",
+    "inputs": {
+      "model_name": "codeformer.pth"
+    }
+  },
+  "3": {
+    "class_type": "FaceRestoreCFWithModel",
+    "inputs": {
+      "facerestore_model": [
+        "2",
+        0
+      ],
+      "image": [
+        "1",
+        0
+      ],
+      "facedetection": "retinaface_resnet50",
+      "codeformer_fidelity": 0.5
+    }
+  },
+  "4": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "3",
+        0
+      ],
+      "filename_prefix": "face_refinement"
+    }
+  }
+}

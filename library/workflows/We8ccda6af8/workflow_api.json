@@ -1,0 +1,214 @@
+{
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "skin_color_edit",
+      "images": [
+        "65",
+        0
+      ]
+    }
+  },
+  "76": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "61": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "62": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 20,
+      "width": [
+        "100",
+        0
+      ],
+      "height": [
+        "100",
+        1
+      ]
+    }
+  },
+  "63": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5,
+      "model": [
+        "70",
+        0
+      ],
+      "positive": [
+        "124",
+        0
+      ],
+      "negative": [
+        "122",
+        0
+      ]
+    }
+  },
+  "64": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "73",
+        0
+      ],
+      "guider": [
+        "63",
+        0
+      ],
+      "sampler": [
+        "61",
+        0
+      ],
+      "sigmas": [
+        "62",
+        0
+      ],
+      "latent_image": [
+        "126",
+        0
+      ]
+    }
+  },
+  "65": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "64",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "67": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Do not change the person's identity, facial features, skin texture, hairstyle, expression, age, gender, body shape, clothing, accessories, pose, framing, camera angle, lighting, or background. Do not alter any non-skin area. Avoid background replacement, wardrobe changes, and facial reconstruction.",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "70": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-base-4b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "71": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "72": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    }
+  },
+  "73": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1111443136920027
+    }
+  },
+  "74": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Edit only the exposed skin inside the supplied skin mask. Change the person's skin tone to a natural warm medium-brown complexion while preserving the exact same person, facial identity, facial features, expression, age, gender, hairstyle, skin detail, clothing, accessories, pose, composition, camera perspective, background, and lighting. Keep all non-skin pixels unchanged.",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "100": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "76",
+        0
+      ]
+    }
+  },
+  "122": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "67",
+        0
+      ],
+      "latent": [
+        "123",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "76",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "124": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "74",
+        0
+      ],
+      "latent": [
+        "123",
+        0
+      ]
+    }
+  },
+  "126": {
+    "class_type": "VAEEncodeForInpaint",
+    "inputs": {
+      "pixels": [
+        "76",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ],
+      "mask": [
+        "127",
+        0
+      ],
+      "grow_mask_by": 4
+    }
+  },
+  "127": {
+    "class_type": "LoadImageMask",
+    "inputs": {
+      "image": "INPUT_MASK.png",
+      "channel": "red"
+    }
+  }
+}

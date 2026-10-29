@@ -1,0 +1,192 @@
+{
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "handwritten_letter",
+      "images": [
+        "77",
+        0
+      ]
+    }
+  },
+  "76": {
+    "class_type": "PrimitiveStringMultiline",
+    "inputs": {
+      "value": "Create a straight-on portrait photograph of one warm off-white sheet of lightly textured stationery filling most of the frame. Keep the paper completely blank and clean, with a large uninterrupted empty central writing area, generous margins, subtle natural paper grain, and soft warm desk lighting. Clear empty negative space for text. No writing instruments or unrelated objects. The image generator must not draw any text or text-like marks."
+    }
+  },
+  "61": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "TBG Flux2 Sampler"
+    }
+  },
+  "62": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 32,
+      "width": [
+        "68",
+        0
+      ],
+      "height": [
+        "69",
+        0
+      ]
+    }
+  },
+  "63": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5,
+      "model": [
+        "70",
+        0
+      ],
+      "positive": [
+        "74",
+        0
+      ],
+      "negative": [
+        "67",
+        0
+      ]
+    }
+  },
+  "64": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "73",
+        0
+      ],
+      "guider": [
+        "63",
+        0
+      ],
+      "sampler": [
+        "61",
+        0
+      ],
+      "sigmas": [
+        "62",
+        0
+      ],
+      "latent_image": [
+        "66",
+        0
+      ]
+    }
+  },
+  "65": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "64",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "66": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": [
+        "68",
+        0
+      ],
+      "height": [
+        "69",
+        0
+      ],
+      "batch_size": 1
+    }
+  },
+  "67": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "letters, words, readable text, handwriting, printed text, dialogue, captions, signature, symbols, pseudo-text, gibberish, scribbles, ink marks, ruled lines, watermark, logo, collage, multiple pages, cropped page, folded paper, writing instrument, unrelated objects",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "68": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 1024
+    }
+  },
+  "69": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 1536
+    }
+  },
+  "70": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-base-4b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "71": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "72": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "flux2-vae.safetensors"
+    }
+  },
+  "73": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1741001
+    }
+  },
+  "74": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": [
+        "76",
+        0
+      ],
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "77": {
+    "class_type": "CR Overlay Text",
+    "inputs": {
+      "image": [
+        "65",
+        0
+      ],
+      "text": "My Darling,\n\nEvery moment apart makes me long\nfor you. I carry your love with me\nthrough every day, and I dream of\nholding you close again.\n\nAll my love,\nJuliet",
+      "font_name": "Caveat-VariableFont_wght.ttf",
+      "font_size": 67,
+      "font_color": "custom",
+      "font_color_hex": "#243653",
+      "align": "top",
+      "justify": "left",
+      "margins": 150,
+      "line_spacing": 18,
+      "position_x": 0,
+      "position_y": 210,
+      "rotation_angle": 0.0,
+      "rotation_options": "text center"
+    }
+  }
+}

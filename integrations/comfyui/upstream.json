@@ -1,0 +1,8 @@
+{
+  "upstream": "https://github.com/Comfy-Org/ComfyUI",
+  "revision": "0a33ed6c28f926d14536235771c222f9e6d1026b",
+  "base_sha256": {
+    "main.py": "988f9e370288f6db027a85d4122993d363e12a995cb427fd05e2a699a04da5c7",
+    "server.py": "74573b10465505b88b618da86059878e3a56418f84c7dae4073c8824aee35a6c"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "2": {
+    "class_type": "LoadImageMask",
+    "inputs": {
+      "image": "INPUT_MASK.png",
+      "channel": "red"
+    }
+  },
+  "3": {
+    "class_type": "GrowMask",
+    "inputs": {
+      "mask": [
+        "2",
+        0
+      ],
+      "expand": 20,
+      "tapered_corners": true
+    }
+  },
+  "4": {
+    "class_type": "INPAINT_LoadInpaintModel",
+    "inputs": {
+      "model_name": "big-lama.pt"
+    }
+  },
+  "5": {
+    "class_type": "INPAINT_InpaintWithModel",
+    "inputs": {
+      "inpaint_model": [
+        "4",
+        0
+      ],
+      "image": [
+        "1",
+        0
+      ],
+      "mask": [
+        "3",
+        0
+      ],
+      "seed": 0
+    }
+  },
+  "6": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyRouter/big_lama_removal",
+      "images": [
+        "5",
+        0
+      ]
+    }
+  }
+}

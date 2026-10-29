@@ -1,0 +1,39 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "2": {
+    "class_type": "CR Overlay Text",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "text": "COMFY ROUTER",
+      "font_name": "Roboto-Regular.ttf",
+      "font_size": 96,
+      "font_color": "white",
+      "align": "center",
+      "justify": "center",
+      "margins": 0,
+      "line_spacing": 0,
+      "position_x": 0,
+      "position_y": 0,
+      "rotation_angle": 0.0,
+      "rotation_options": "text center"
+    }
+  },
+  "3": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "comfyrouter_verified_overlay_text",
+      "images": [
+        "2",
+        0
+      ]
+    }
+  }
+}

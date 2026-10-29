@@ -1,0 +1,180 @@
+{
+  "1": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "Wan2.2-Fun-5B-Control-Q5_K_M.gguf"
+    }
+  },
+  "2": {
+    "class_type": "ModelSamplingSD3",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "shift": 8.0
+    }
+  },
+  "3": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    }
+  },
+  "4": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "wan2.2_vae.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "A single clearly recognizable target character performing the supplied full-body dance choreography. Preserve the exact identity, species, anatomy, clothing or surface details, and visual style established by the opening reference image. Precisely follow the supplied pose sequence, including the opening orientation, turns, arm extensions, steps and bends. Fixed wide camera, full body always visible, stable background matching the reference video, consistent character design and sharp temporal detail.",
+      "clip": [
+        "3",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "wrong target identity, inconsistent species, inconsistent character design, identity change, unwanted costume, malformed anatomy, extra limbs, missing limbs, wrong opening orientation, static pose, wrong choreography, camera movement, background change, flicker, blur, overexposure, text, logo, watermark",
+      "clip": [
+        "3",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "VHS_LoadVideo",
+    "inputs": {
+      "video": "INPUT_VIDEO.mp4",
+      "force_rate": 20,
+      "custom_width": 832,
+      "custom_height": 480,
+      "frame_load_cap": 121,
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "format": "None"
+    }
+  },
+  "8": {
+    "class_type": "DWPreprocessor",
+    "inputs": {
+      "image": [
+        "7",
+        0
+      ],
+      "resolution": 512,
+      "detect_body": "enable",
+      "detect_hand": "enable",
+      "detect_face": "enable",
+      "bbox_detector": "yolox_l.torchscript.pt",
+      "pose_estimator": "dw-ll_ucoco_384_bs5.torchscript.pt"
+    }
+  },
+  "9": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "10": {
+    "class_type": "Wan22FunControlToVideo",
+    "inputs": {
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "vae": [
+        "4",
+        0
+      ],
+      "width": 832,
+      "height": 480,
+      "length": 121,
+      "batch_size": 1,
+      "ref_image": [
+        "9",
+        0
+      ],
+      "control_video": [
+        "8",
+        0
+      ]
+    }
+  },
+  "11": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "seed": 123457,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "uni_pc",
+      "scheduler": "simple",
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "10",
+        1
+      ],
+      "latent_image": [
+        "10",
+        2
+      ],
+      "denoise": 1.0
+    }
+  },
+  "12": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "11",
+        0
+      ],
+      "vae": [
+        "4",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "12",
+        0
+      ],
+      "fps": 20.0,
+      "audio": [
+        "7",
+        2
+      ]
+    }
+  },
+  "14": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "13",
+        0
+      ],
+      "filename_prefix": "motion_clone_wan22_fun5b",
+      "format": "auto"
+    }
+  }
+}

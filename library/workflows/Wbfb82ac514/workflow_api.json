@@ -1,0 +1,302 @@
+{
+  "1": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "INPUT_VIDEO.mp4"
+    }
+  },
+  "2": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "1",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "2",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "4": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "3",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "megapixels": 0.5,
+      "resolution_steps": 1
+    }
+  },
+  "5": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "4",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-base-4b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "7": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "8": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    }
+  },
+  "9": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Create one photorealistic identity anchor of TARGET_IDENTITY from the visible face in this frame. Replace only facial identity while retaining a clear, unobstructed human face, the original head pose, gaze, expression, mouth position, camera angle, lighting direction, and realistic skin detail. The target identity name must be replaced at runtime from the task instruction. Produce exactly one coherent adult face suitable as a fixed InsightFace source reference for all video frames.",
+      "clip": [
+        "7",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "original source identity, ambiguous identity, child, minor, multiple people, multiple faces, obscured face, profile-only face, changed head pose, changed gaze, changed expression, changed mouth shape, distorted face, asymmetrical eyes, duplicate features, plastic skin, cartoon, illustration, blur, text, watermark",
+      "clip": [
+        "7",
+        0
+      ]
+    }
+  },
+  "11": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "4",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "9",
+        0
+      ],
+      "latent": [
+        "11",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "10",
+        0
+      ],
+      "latent": [
+        "11",
+        0
+      ]
+    }
+  },
+  "14": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "15": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 20,
+      "width": [
+        "5",
+        0
+      ],
+      "height": [
+        "5",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5.0,
+      "model": [
+        "6",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "13",
+        0
+      ]
+    }
+  },
+  "17": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 18220260918
+    }
+  },
+  "18": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "17",
+        0
+      ],
+      "guider": [
+        "16",
+        0
+      ],
+      "sampler": [
+        "14",
+        0
+      ],
+      "sigmas": [
+        "15",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    }
+  },
+  "19": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "18",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "Load Face Analysis Model (mtb)",
+    "inputs": {
+      "faceswap_model": "buffalo_l"
+    }
+  },
+  "21": {
+    "class_type": "Load Face Swap Model (mtb)",
+    "inputs": {
+      "faceswap_model": "inswapper_128.onnx"
+    }
+  },
+  "22": {
+    "class_type": "RebatchImages",
+    "inputs": {
+      "images": [
+        "2",
+        0
+      ],
+      "batch_size": 32
+    }
+  },
+  "23": {
+    "class_type": "Face Swap (mtb)",
+    "inputs": {
+      "image": [
+        "22",
+        0
+      ],
+      "reference": [
+        "19",
+        0
+      ],
+      "faces_index": "0",
+      "faceanalysis_model": [
+        "20",
+        0
+      ],
+      "faceswap_model": [
+        "21",
+        0
+      ],
+      "preserve_alpha": false
+    }
+  },
+  "24": {
+    "class_type": "ImageListToBatch+",
+    "inputs": {
+      "image": [
+        "23",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "24",
+        0
+      ],
+      "fps": [
+        "2",
+        2
+      ],
+      "audio": [
+        "2",
+        1
+      ],
+      "bit_depth": [
+        "2",
+        3
+      ],
+      "color_space": [
+        "2",
+        4
+      ]
+    }
+  },
+  "26": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "25",
+        0
+      ],
+      "filename_prefix": "v2v_identity_face_swap_single_video",
+      "format": "mp4",
+      "codec": "h264"
+    }
+  }
+}

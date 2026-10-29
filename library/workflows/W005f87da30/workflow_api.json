@@ -1,0 +1,104 @@
+{
+  "1": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "INPUT_VIDEO.mp4"
+    }
+  },
+  "2": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "1",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "CR Color Tint",
+    "inputs": {
+      "image": [
+        "2",
+        0
+      ],
+      "strength": 1.0,
+      "mode": "red"
+    }
+  },
+  "4": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "2",
+        0
+      ],
+      "source": [
+        "3",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "mask": [
+        "7",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "INPUT_VIDEO_B.mp4"
+    }
+  },
+  "6": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "5",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "6",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "8": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "4",
+        0
+      ],
+      "audio": [
+        "2",
+        1
+      ],
+      "fps": [
+        "2",
+        2
+      ],
+      "bit_depth": "auto",
+      "color_space": "sRGB"
+    }
+  },
+  "9": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "8",
+        0
+      ],
+      "filename_prefix": "ComfyRouter/color_modification",
+      "format": "mp4",
+      "codec": "h264"
+    }
+  }
+}

@@ -1,0 +1,631 @@
+{
+  "schema_version": "agentic-rag-package-1",
+  "date": "2026-10-27",
+  "routing": "initial E5 Top-20; Agent-requested focused followup; at most 3 initial routing searches",
+  "repair": "Agent may request local workflow retrieval at every generation/setup/preflight/execution/quality repair planning boundary; external search decisions retained",
+  "budget": "at most 3 GPU execution rounds; retrieval never resets or consumes GPU round budget",
+  "provenance": "docs/PROVENANCE.md",
+  "validation": {
+    "clean_export_tests_passed": 139,
+    "optional_tests_skipped": 2,
+    "subtests_passed": 11,
+    "syntax_check": "passed",
+    "archive_integrity": "passed",
+    "live_gpu_generation_rerun": false
+  },
+  "excluded": [
+    "taxonomy traversal/building",
+    "JEV classifiers",
+    "cross-task self-evolution",
+    "real .env files and credentials",
+    "model weights",
+    "historical experiment inputs/logs/outputs",
+    ".git and Python caches"
+  ],
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "b47df021b2d77148f7eb3911e975da33c89d624c961acac66d934539e7f4f649"
+    },
+    {
+      "path": ".github/workflows/tests.yml",
+      "sha256": "7607869fbfd3d6ae33cacadc61cd874efc5347be128993d7c0379f70b86715b3"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "ef1d2272971a08d732467a8d18fce4006c4ed4afb3409de35cf8cca0e6f330e1"
+    },
+    {
+      "path": "README.md",
+      "sha256": "163fa7bc61201b671b08844d058153cdd7bddfa6b472579ac4892e56d363ff16"
+    },
+    {
+      "path": "comfyrouter/__init__.py",
+      "sha256": "a0fc4bd7e55c8bf145240c90afead4eac4f2a41945fd66f6694cee5ac61fbb92"
+    },
+    {
+      "path": "comfyrouter/agentic.py",
+      "sha256": "1cff23bc8daa1d6c0e57b776ace551c19e0a347a1fef8be4d87c6268f0391fb2"
+    },
+    {
+      "path": "comfyrouter/agentic_retrieval.py",
+      "sha256": "75246e4539768bbda8ac115ccbc05912a8655ef7eff7cd44d87a90370797095d"
+    },
+    {
+      "path": "comfyrouter/api_serial.py",
+      "sha256": "52b9d0476882c286019b6ca194b4f3f5f7b97a220b942625257bf5a42374508a"
+    },
+    {
+      "path": "comfyrouter/benchmark_transport_recovery.py",
+      "sha256": "8400fd44fa08c686079e8f8bc10fde3cd6e9b5bf91b1e7e7c61406f498ee4112"
+    },
+    {
+      "path": "comfyrouter/case_execution.py",
+      "sha256": "24ea11a7312d9739998de83a95348ac830348504fcbbaf80063b276908441b6e"
+    },
+    {
+      "path": "comfyrouter/closed_loop.py",
+      "sha256": "e48671045cfebbdfa8caeadd888d6d60130e06656daf05cfa4612d9d188ad042"
+    },
+    {
+      "path": "comfyrouter/compact_io.py",
+      "sha256": "5e7780a4ad22264ce2256b1c7d504b2b88b4863da4e18726dd4ef449f43a0e64"
+    },
+    {
+      "path": "comfyrouter/comparison_transport_recovery.py",
+      "sha256": "2b79f0c7e822ea7b11f8ba83aa42e7e31500243eca475d5d9bbfb2c0e228bcbe"
+    },
+    {
+      "path": "comfyrouter/composition.py",
+      "sha256": "b8ea90faa4da60f8d8951763b8ca36b22caf081b5f770d135fa26ad9d6923b1e"
+    },
+    {
+      "path": "comfyrouter/config.py",
+      "sha256": "616969b5f56a7b2f969bdde0d91639f4a5a8b77bf6b11ff6bfb21c1929bf51ad"
+    },
+    {
+      "path": "comfyrouter/execution_contract.py",
+      "sha256": "bd1c6faa84bc40e578d58b3f603e8fefe99e81444ec21397c4f2eaf25ec1a314"
+    },
+    {
+      "path": "comfyrouter/execution_diagnostics.py",
+      "sha256": "341e0d1760bc17005e87dff9e5cc1fcd15ed8c39f3829672675eb72862bdf020"
+    },
+    {
+      "path": "comfyrouter/generation_output.py",
+      "sha256": "9f4006b13bc3ca42ab8c2c5a25d595845d0f28470f60ac39e88e5a52f50e20ff"
+    },
+    {
+      "path": "comfyrouter/mask_fallback.py",
+      "sha256": "f981c5a9ae2550e4750257ea50989407f470b1bba5cc4f2cb2cda8733bdcb31e"
+    },
+    {
+      "path": "comfyrouter/media_inputs.py",
+      "sha256": "262846c2d2880c2ebadb626947de9357af9d76eca4d41a73f5c4191fd09a8bd9"
+    },
+    {
+      "path": "comfyrouter/native_queue.py",
+      "sha256": "0dcbf4636f828c551eb9bcd576ac83a5ddf5e1369ce651f1db19017712f7ae7c"
+    },
+    {
+      "path": "comfyrouter/network.py",
+      "sha256": "aebc05abcf119d7382f9c32d05cae40fffb5e0b1eb0f8b5e9faf5d53341760a4"
+    },
+    {
+      "path": "comfyrouter/operation_notebook.py",
+      "sha256": "803b0f6f803ddb9a3e02f43f6f11f56a6c35edf981ed921f844256c71d902ef6"
+    },
+    {
+      "path": "comfyrouter/parameter_generation.py",
+      "sha256": "545eacc003ba3c6cc9c9a36088c6e4c0b25704db504e5f39faaeda8f6ce68d68"
+    },
+    {
+      "path": "comfyrouter/prompt_evidence.py",
+      "sha256": "ba093c3e2bd30f1c6181b6b3ee700c98fbbe7cbed12b87c2edf7242b07a5a869"
+    },
+    {
+      "path": "comfyrouter/prompt_interfaces.py",
+      "sha256": "408508e9b7773489e35b498cdf30d69c4fb855f6bf61805510e1dc0252bc06b6"
+    },
+    {
+      "path": "comfyrouter/quality_policy.py",
+      "sha256": "99bd010fe7be3c8a919a36c642d30d43fbca9022f2271321581fc2dfaee87a18"
+    },
+    {
+      "path": "comfyrouter/rag_capability_analysis.py",
+      "sha256": "7334e3527e6af36412358c13a4ee020e99cf8dfdabf47b528e30a85e3f5f228c"
+    },
+    {
+      "path": "comfyrouter/repair.py",
+      "sha256": "421547eb0e8f78867b77a9d31a8db119ba7c13302b0d7680744f6e0349cd73d3"
+    },
+    {
+      "path": "comfyrouter/resource_limits.py",
+      "sha256": "a9ea49dee9167d5e3daf60768808651182d221efa0a0634195f10090e5b4c6ce"
+    },
+    {
+      "path": "comfyrouter/result_protocol.py",
+      "sha256": "4ac8199427d5a5a510f63ef61ca937680d9f7c825e1291f4791a70b775736889"
+    },
+    {
+      "path": "comfyrouter/semantic_retrieval.py",
+      "sha256": "96169cfde637e6713f0f3930856052d83174b435e1aa29a069946e826a9a06b4"
+    },
+    {
+      "path": "comfyrouter/stage_pipeline.py",
+      "sha256": "c175650cc32b2d9504aa3d3bc39310d9938004921f7c2be7c054f454cbb45cd4"
+    },
+    {
+      "path": "comfyrouter/transport_retry.py",
+      "sha256": "385f1b087053480a3cec7152917fa6246420f5d0bff49b9115d3231c14ff026a"
+    },
+    {
+      "path": "comfyrouter/types.py",
+      "sha256": "43bda8a41f330c5f4fcc94a02b29a25ba083055702acd65b362c3914a9af699d"
+    },
+    {
+      "path": "comfyrouter/vendor/__init__.py",
+      "sha256": "ebb4783fb0366f016f637d7e04aff62aafaa6acd7bba9be8dc7f672d9429d109"
+    },
+    {
+      "path": "comfyrouter/vendor/graph_patch.py",
+      "sha256": "e757d317f2714b405e6068934932ab5d002b30482c223c63c9b5613347ae57b4"
+    },
+    {
+      "path": "comfyrouter/whole_request_selection.py",
+      "sha256": "6fa558ce1649437221e9cbbcb71780843cf4b37cdd9c4e970361fdf59969f9e8"
+    },
+    {
+      "path": "data/agent_skills.json",
+      "sha256": "f7a86421294c34cf1c8dd5f61cd466fd2fab9f89dba574c96b668cf82fdf0819"
+    },
+    {
+      "path": "docs/METHOD.md",
+      "sha256": "e3e09c40ca782aea5dc6d0f9de05eaa097fe02afd4bce8705e2bdb0b776d71d3"
+    },
+    {
+      "path": "docs/PORTABILITY.md",
+      "sha256": "515850234e58a8063f670c92f89ca4fa4c9617241b86803660b85cbb38667c53"
+    },
+    {
+      "path": "docs/PROVENANCE.md",
+      "sha256": "367952937139454a80d5ebddfb6d1165d61edc617d399dfe7a97b9d9af8e4d84"
+    },
+    {
+      "path": "examples/tasks.json",
+      "sha256": "9820504c451a4e37d131008da39381f95f975a1193f9f2dc58aed0dc351eb68e"
+    },
+    {
+      "path": "integrations/comfyui/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "integrations/comfyui/NOTICE",
+      "sha256": "e38a62d571b7d7b6bd1b1f3e8535cdce49458e8ae0f52e7609e8017dc9ba66db"
+    },
+    {
+      "path": "integrations/comfyui/README.md",
+      "sha256": "7d7e90911e9848c2df29a67309ddbbe1481e40c54fc034b82fdefc053390b8fb"
+    },
+    {
+      "path": "integrations/comfyui/install.py",
+      "sha256": "286a4284269e5297af06c1aec9a4718ce774b343fef07e0f36812d146d0f9423"
+    },
+    {
+      "path": "integrations/comfyui/prompt_memory_cleanup.py",
+      "sha256": "bff609d9e7220400d608e252876622921735fff109e426d7420b02fc14ce13a0"
+    },
+    {
+      "path": "integrations/comfyui/prompt_queue_recovery.py",
+      "sha256": "3a9d2d5c96f56d848c634d9eacce2d91151c2fd80ee1b9e766a864b3a400ab90"
+    },
+    {
+      "path": "integrations/comfyui/prompt_worker.py",
+      "sha256": "1364d8f5eb7974a0aea42a4e2b1dc903f5f59b5143ccef47a9fde60087aea9d3"
+    },
+    {
+      "path": "integrations/comfyui/upstream.json",
+      "sha256": "11c8df3de6950ec43396a8067b6faae32db34f8a39aab22353283f3f9f39f831"
+    },
+    {
+      "path": "library/catalog.json",
+      "sha256": "af88081ff3be2069a44a7b62506c98c8b2173f268d934e214ed4a781a41ff1d2"
+    },
+    {
+      "path": "library/embedding_manifest.json",
+      "sha256": "652072bd7df2022e46b930af5edfd636228c0cafb2a6ee2cf097bb3ddca3e998"
+    },
+    {
+      "path": "library/workflow_vectors.npy",
+      "sha256": "35cd86e989732430fa2e148594896b48a7e81e4b2f305a93fb343b61b3a49dd3"
+    },
+    {
+      "path": "library/workflows/W005f87da30/workflow_api.json",
+      "sha256": "438a011e8b3759275a40d0035ecab47245f0745a3a65e1816e332f83c7ab2acc"
+    },
+    {
+      "path": "library/workflows/W03c604ae5f/workflow_api.json",
+      "sha256": "f977289510999601915d476bb40883d90771f123ec21e4dcc846c4b3eef8df0b"
+    },
+    {
+      "path": "library/workflows/W04dc26c831/workflow_api.json",
+      "sha256": "df1de653395f8536d1385c83dc2bba7796e11025f16291419527fcd7cc4e654e"
+    },
+    {
+      "path": "library/workflows/W085a4faaa1/workflow_api.json",
+      "sha256": "2e6a616f1650808240c04f0ce874ffc1c66550bb23b4d3af02f8fd288c94534b"
+    },
+    {
+      "path": "library/workflows/W094ffaf4f0/workflow_api.json",
+      "sha256": "3d6156476c76464bffbc67a00cdcec54af74a2b371bdda8610c8a21fab2202ad"
+    },
+    {
+      "path": "library/workflows/W15a0d5db12/workflow_api.json",
+      "sha256": "8b7bf968fddfe8a74ec90f215c112ee261c003b5e458cf7e42d875a8fb2eea63"
+    },
+    {
+      "path": "library/workflows/W1beaa71025/workflow_api.json",
+      "sha256": "1eb25280caa955584e437c5290e486c7a5619a1d3207062a0ec8963d093d7708"
+    },
+    {
+      "path": "library/workflows/W203425ac34/workflow_api.json",
+      "sha256": "9014c3abf71039d0b4f01f44ba479b71b60fd69eb47e5141aea859e0d780217b"
+    },
+    {
+      "path": "library/workflows/W249e6be83b/workflow_api.json",
+      "sha256": "f70ba69c343a15966b1ce30e5f1810716ac63a51d196ed2073cd0075dab96032"
+    },
+    {
+      "path": "library/workflows/W294f6621d2/workflow_api.json",
+      "sha256": "639c1375602c9398ebead8a24e4afbe409083f3de4176e255eac32c5e40d0ce4"
+    },
+    {
+      "path": "library/workflows/W2b2a3bcc25/workflow_api.json",
+      "sha256": "854e0615fd15cc2fa3a513792992fadd91001a337157a3cd60b22e62ff20aed9"
+    },
+    {
+      "path": "library/workflows/W2c53b160c1/workflow_api.json",
+      "sha256": "854e87650fa4682632f28386868fe1d900bd7e682eeef8fa52bec61f38287e2c"
+    },
+    {
+      "path": "library/workflows/W3596d4d91b/workflow_api.json",
+      "sha256": "07d049028c717d739ebdf274d81d23e982002b8b98be1e77096d0a9aa7dafbfc"
+    },
+    {
+      "path": "library/workflows/W404dc3bdaa/workflow_api.json",
+      "sha256": "39695ab815d11bd6289d2572e2732cb890d831c6b4d1d419ab72368a6fa2bd84"
+    },
+    {
+      "path": "library/workflows/W489628ed5a/workflow_api.json",
+      "sha256": "8b1bbd6747719abe8261e55aad89a1021c0395553309021267bcc1a4ec85afd3"
+    },
+    {
+      "path": "library/workflows/W4d07d28d1d/workflow_api.json",
+      "sha256": "868de2f80d4016b84fe54c267cb368325aab71195f810deec786c0203b992874"
+    },
+    {
+      "path": "library/workflows/W4f4e0c0270/workflow_api.json",
+      "sha256": "1d6bc7c0c93f5f4322bf6b9e1abe383b4038635b59597385558789b1100090ff"
+    },
+    {
+      "path": "library/workflows/W5015b24757/workflow_api.json",
+      "sha256": "4e778fbd51f7f6612b0a3c1d5c5c630036d8f6c02d2b845a17805362ec0e637d"
+    },
+    {
+      "path": "library/workflows/W52359e2085/workflow_api.json",
+      "sha256": "8ff8b5c56707deb28091154d695a15f7b421235ec0101ce2c72db3430512c123"
+    },
+    {
+      "path": "library/workflows/W577de49115/workflow_api.json",
+      "sha256": "1ba3596b3edc363108fddd0e86a3ec59a993877f9cdc5437a5c1d14810f03b26"
+    },
+    {
+      "path": "library/workflows/W58c586577d/workflow_api.json",
+      "sha256": "b56d958318d5d3ef98939686f9479cbfe7cd05f0f562af5abfd35bd62050bc6b"
+    },
+    {
+      "path": "library/workflows/W5d3c5ec12f/workflow_api.json",
+      "sha256": "525043dca8de896a0277a458be6cd559501f7b27023b8b9ce415660545eaf1dc"
+    },
+    {
+      "path": "library/workflows/W5e910da050/workflow_api.json",
+      "sha256": "aec0fae1a8f314836e04ff59e5b856a7cacc53be8894197ff84875096d9fedba"
+    },
+    {
+      "path": "library/workflows/W63a9ade2c8/workflow_api.json",
+      "sha256": "645f5719c78b916dc81f414b77470c7be3a2e3315e7984a91ffe06fe418b3482"
+    },
+    {
+      "path": "library/workflows/W6b1f567da2/workflow_api.json",
+      "sha256": "9bfdc2e0fada0024fd3404b7e0e68f8d9a2752aa47e6aa9eb7465afa4c7829ea"
+    },
+    {
+      "path": "library/workflows/W6fc9f61be5/workflow_api.json",
+      "sha256": "17e3a8967a05709c86cc49d082a8e2996422065acdfc04dd5b478e96c8c1181b"
+    },
+    {
+      "path": "library/workflows/W71051a0184/workflow_api.json",
+      "sha256": "db052622a9ced076740a16965b6d7cda20a9a143c0e3353bfc465bdc300bd5f5"
+    },
+    {
+      "path": "library/workflows/W72dfb2c5a2/workflow_api.json",
+      "sha256": "261264aaae857bd571c7fd8479cd4f8532029bd1c9033444d9626b8a28154f82"
+    },
+    {
+      "path": "library/workflows/W742bf9649e/workflow_api.json",
+      "sha256": "64e969114b8d042b71441bd0f993b87d30a82fe87785335cbb3c43173129feaa"
+    },
+    {
+      "path": "library/workflows/W742c475757/workflow_api.json",
+      "sha256": "abbd995e6ceeba7c7ac8c20133c5fbdbb25ef39e49a8b5ffee010cfe3f383c64"
+    },
+    {
+      "path": "library/workflows/W7c308dbf4e/workflow_api.json",
+      "sha256": "f937bdd310300b4999853e0e4e87389a7d4c1c584973b48c6011aea015edc59e"
+    },
+    {
+      "path": "library/workflows/W7dfacfabd7/workflow_api.json",
+      "sha256": "8714937a26ccf544c58480d31c1e1d90a2ee9ad41cd6a27bc4f5ca282de4e897"
+    },
+    {
+      "path": "library/workflows/W7e7a689936/workflow_api.json",
+      "sha256": "984b41644750002dd7c2f39a56cefff156700cc6635f05303af52259d6fcfd93"
+    },
+    {
+      "path": "library/workflows/W7efb32b8d1/workflow_api.json",
+      "sha256": "f84747bf7aeaefc7dc54a5b82ae356e5cea6bd839d02dbd2c644eec593930851"
+    },
+    {
+      "path": "library/workflows/W7fdf148b70/workflow_api.json",
+      "sha256": "751514a0ab43df09828cd3f8fb5c6da3cf7fb3094c4800630802418cc8ef610b"
+    },
+    {
+      "path": "library/workflows/W82fd264b38/workflow_api.json",
+      "sha256": "6fe249baed0cc1dbdae4bd44ffd0bdb9502bc5fec274d9c9809060e2d830f73a"
+    },
+    {
+      "path": "library/workflows/W86a9299df1/workflow_api.json",
+      "sha256": "9be3229dbfce081cec7b88289834f395da4f05e1223435b493969c246b4efe50"
+    },
+    {
+      "path": "library/workflows/W99912928b9/workflow_api.json",
+      "sha256": "d4c19f28ce18cba5d62d0b9a553dcda97806a88a4fcb4d6a5e27980c7932ec19"
+    },
+    {
+      "path": "library/workflows/W99f867248b/workflow_api.json",
+      "sha256": "2e4a05a80323d428b73d88f00d78023f71a0f6b0cee4e3dc2dd41f78e606d4d5"
+    },
+    {
+      "path": "library/workflows/W9a238a81d5/workflow_api.json",
+      "sha256": "7f235c40fa01abc3d52571dc1e1f8fb2ae676d4d07c3a21a38830bf0148caaf4"
+    },
+    {
+      "path": "library/workflows/W9da320b11b/workflow_api.json",
+      "sha256": "244fd9a7871c2c734b4ba2fa6392985827e4a795465ff6f01738bd1349ea04eb"
+    },
+    {
+      "path": "library/workflows/W9eafe5750d/workflow_api.json",
+      "sha256": "9b64726b8dc5366adef5b71b27267a2a434689a1e6e315db9da1636969d96b22"
+    },
+    {
+      "path": "library/workflows/Wa5ccc1b19e/workflow_api.json",
+      "sha256": "7f700ce4e8bdb2b8b3bc3a899cda0c7d4716a95a93dfada706234d764078861c"
+    },
+    {
+      "path": "library/workflows/Wac41ca2133/workflow_api.json",
+      "sha256": "831aa3db2323efcccbf14230da47ae4ae25fe65377ad27a357e92b78c7fec4f9"
+    },
+    {
+      "path": "library/workflows/Wafd3d79219/workflow_api.json",
+      "sha256": "792683f9a48b56058eccc3ae8dcdeb83b30ddecc3f1970b746f802f1c0394f4c"
+    },
+    {
+      "path": "library/workflows/Wb1ee4b06b5/workflow_api.json",
+      "sha256": "081330ce91e319c5c4e6d6dcb704faa44af652bff211462e7c5f1b2acff2db86"
+    },
+    {
+      "path": "library/workflows/Wbc7e5f8a14/workflow_api.json",
+      "sha256": "3a7418721ff5019b441e5ce5b748e0ececc3feccf4224dfed199177b18e08e5f"
+    },
+    {
+      "path": "library/workflows/Wbfb82ac514/workflow_api.json",
+      "sha256": "203ec18973a8c976c064689d2aee7388775ea5d05827599296f0db731781e85b"
+    },
+    {
+      "path": "library/workflows/Wc1b5ba235e/workflow_api.json",
+      "sha256": "e5a19d8f771b923c9c01865f0efe5eff025377d8b93f32a01d9afe2ac13ade93"
+    },
+    {
+      "path": "library/workflows/Wc7afa17924/workflow_api.json",
+      "sha256": "5679a0cfaa5a79b77433abce3981d34895bb576ab3db17594c44d2f7d57dc5b8"
+    },
+    {
+      "path": "library/workflows/Wc8b68ba1c8/workflow_api.json",
+      "sha256": "4c90336118be1de345da58052a6fd25bef3d2266a2902862ec65a0c5469fa09e"
+    },
+    {
+      "path": "library/workflows/Wcc4e6c56c3/workflow_api.json",
+      "sha256": "221991215f1d609cd0d7a7c6705487d38d5f43d385f7e13d6997076e11fcded3"
+    },
+    {
+      "path": "library/workflows/Wce0bacc07d/workflow_api.json",
+      "sha256": "2d8d1bd873cc813dce486e7fcbd08a2b7c7c2940b053064537e542e38b80263c"
+    },
+    {
+      "path": "library/workflows/Wce352f79e1/workflow_api.json",
+      "sha256": "ccadfbda79f87c82485ba3769f8cdb81baf45f26da084a53628a208f7da4a81b"
+    },
+    {
+      "path": "library/workflows/Wd37a6eab8c/workflow_api.json",
+      "sha256": "64041aad89cc1b984b90b43c4beadd907e866a3fa35cfa23e764e9fbab651cdf"
+    },
+    {
+      "path": "library/workflows/Wd9c9253834/workflow_api.json",
+      "sha256": "952a7a3ec9fc7baf2471708df997567c9e575fcee41449e7a9b4a0c506165579"
+    },
+    {
+      "path": "library/workflows/Wddd72e408d/workflow_api.json",
+      "sha256": "1829f03adc9be05ba466f2fc6fd67018ffbd8d598b50e0baf7fad3356e43775f"
+    },
+    {
+      "path": "library/workflows/We1b47ae3a2/workflow_api.json",
+      "sha256": "a6f731c14a373a781aeace7c9f573782f78d474ff2b6cafa408710dde4c20473"
+    },
+    {
+      "path": "library/workflows/We5f4158af3/workflow_api.json",
+      "sha256": "667bbe52e5a3e90bc0ea335410c16006532c0b07e2f75e2e516ce992aa696964"
+    },
+    {
+      "path": "library/workflows/We6301344d7/workflow_api.json",
+      "sha256": "c22267c927acbb239e566d090f3f9ac256f5635b37dac8dc0cf301ae49de86d8"
+    },
+    {
+      "path": "library/workflows/We8ccda6af8/workflow_api.json",
+      "sha256": "d2dfbd0a646f2738cbd48424d964b0f0562cf1353c95348ecd08d3373fb0f538"
+    },
+    {
+      "path": "library/workflows/We9ebcd7c4b/workflow_api.json",
+      "sha256": "de88283c56188aa5d84491f8456973673726be6e7cabc5b44fa22cc17b8ec3c2"
+    },
+    {
+      "path": "library/workflows/Wf6e27941cf/workflow_api.json",
+      "sha256": "58ba383f528f226d5b78323f503058ce417f81954117bec67488f48e9cedf5c2"
+    },
+    {
+      "path": "library/workflows/Wf8c04a2306/workflow_api.json",
+      "sha256": "1c98f963649babe9561d3699e539e7ea22448269a3748d88ce765ade731e513c"
+    },
+    {
+      "path": "library/workflows/Wfaf115c6c9/workflow_api.json",
+      "sha256": "863b79b792fc5912e6e383e7dd5ad704bcea5c674886372da855b867494ff176"
+    },
+    {
+      "path": "library/workflows/Wfd54006f45/workflow_api.json",
+      "sha256": "4e778fbd51f7f6612b0a3c1d5c5c630036d8f6c02d2b845a17805362ec0e637d"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "sha256": "1ff0d922001edc278566d372a9cc4c5dd08a36db6e79418e59c17da38ee8deb1"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "2c9546dd306ebe3b75e3c7594569f729c29de6a93424b48610b369f6e09c42f6"
+    },
+    {
+      "path": "tests/__init__.py",
+      "sha256": "3e460ced8b7e4236eb422b9f73728fae196ee70fb11da184695dd08eb29d7306"
+    },
+    {
+      "path": "tests/conftest.py",
+      "sha256": "ca910af42061663ab94c72cafafc5f5649524cb2392aca800309aa5a28a40a8f"
+    },
+    {
+      "path": "tests/test_agentic_retrieval.py",
+      "sha256": "7213c166e279941061a1bf71484b85e7dd0505f8e0c64a48e18d535c7ed9567c"
+    },
+    {
+      "path": "tests/test_capability_single_pass_rag.py",
+      "sha256": "6c512777b7238c9022f2df01115c74056de1f1e0433c6bfa1bd444242498642e"
+    },
+    {
+      "path": "tests/test_comparison_transport_recovery.py",
+      "sha256": "075db392e0355c9c9d56b858454e9c29d9726c92b763221b3f409023380a28c8"
+    },
+    {
+      "path": "tests/test_composition_forward_diagnosis.py",
+      "sha256": "1031736214c6e27b1d450c979b5e238493e366f9ddf8ed2747e2f0c979b7b4cf"
+    },
+    {
+      "path": "tests/test_composition_independent_repairs.py",
+      "sha256": "d56aef2ed66f0fe39edd627140acffba764c85fee0ef2e860e7e786b1bbfad35"
+    },
+    {
+      "path": "tests/test_native_queue_window.py",
+      "sha256": "485d460393485c8237cefed71e92b5696b9651d2786b6434ff55a7aadf0fe1e3"
+    },
+    {
+      "path": "tests/test_native_result_protocol.py",
+      "sha256": "b421691a4c6f3d5f5a8fa50deea00f8143e35d561f20a32e57cf972f4c11023f"
+    },
+    {
+      "path": "tests/test_preflight_iteration_budget.py",
+      "sha256": "cc76fd76af1e3d9f3e6b4d7540aa1cde085b0a464b6c222585b9ea77acf1b6a8"
+    },
+    {
+      "path": "tests/test_release_entrypoints.py",
+      "sha256": "ff3e7fbd0dc482702eeb3d8cec3645dbae95db1301aa69cf25968420f59c1bfe"
+    },
+    {
+      "path": "tests/test_semantic_retrieval.py",
+      "sha256": "7ec754f5dd19589060c3957d1e277596d05f57eabe2880ec4435906f9ee6a5ae"
+    },
+    {
+      "path": "tests/test_upstream_media_handoff.py",
+      "sha256": "281887f1322bd5891a32fb8b1abc983f7922137b77092c9497bdcda6a59c81b9"
+    },
+    {
+      "path": "tests/test_video_repair_inputs.py",
+      "sha256": "80db3a60e08b96dd980974cf9482ce85780df3427a89c1ee4958879baf38a6e0"
+    },
+    {
+      "path": "tests/test_visual_tolerance_regeneration.py",
+      "sha256": "cce4fa2342e32578a7bfd96bf8e20f96ee48480427fcd89d12a718b863a94149"
+    },
+    {
+      "path": "tests/test_whole_request_selection.py",
+      "sha256": "88a49883170c6edb0e3b1a63284b7b92c3102065867dc68f49af07409b2bfa0d"
+    },
+    {
+      "path": "tools/__init__.py",
+      "sha256": "cb1257014a0b11bb4405644efab3aa38fa123884b40d863afd96441e76020cc6"
+    },
+    {
+      "path": "tools/audit_final_media_contract.py",
+      "sha256": "92b13bc29437a85728d914ca7bbb3643ddae3b4dd14c434f3aa080e3be870207"
+    },
+    {
+      "path": "tools/evaluate_comfybench_case.py",
+      "sha256": "8a746d27c2b91d7451d67937ae9c79c3a5965b9b80b0ed841d519daec64c0e52"
+    },
+    {
+      "path": "tools/official_evaluation_once.py",
+      "sha256": "be0be6ce8116a29595406ec9b82cac61bb1b931c1538a9ff7c97ae1922670e63"
+    },
+    {
+      "path": "tools/prepare_run.py",
+      "sha256": "3a85e64af228ba8a7daac79969b523a15161fc9ad32daed29ba8061001b1fa0f"
+    },
+    {
+      "path": "tools/progress.py",
+      "sha256": "189bc1bf9483419ed3e515e1b61294f4a9307c71fb4d753691ddea700dcd2612"
+    },
+    {
+      "path": "tools/run.py",
+      "sha256": "ec0d4a66144261f3745ceae32a16fb539c34dd1c86401bc10753595677269b86"
+    },
+    {
+      "path": "tools/run_anonymous_md_comparison.py",
+      "sha256": "66f5af468b56aa3507722b70c7e855f77966f26da36995b1b420b8eba9adbd31"
+    },
+    {
+      "path": "tools/run_comfybench_case.py",
+      "sha256": "5dcc3fe1f7378cb407e504b85610f6b941b69c4b90a3dc8ed76048b63d3b1447"
+    },
+    {
+      "path": "tools/run_dataset_direction_smoke.py",
+      "sha256": "24246da13960fdcd5fb1ab44da96bd810bc5794736279f1fba2cfaf30ccb86ce"
+    },
+    {
+      "path": "tools/run_routing_comparison.py",
+      "sha256": "1a073e54bc8f6320e16dd287cde89bdccb97ee2b7a76adf437631b8ce0665b59"
+    },
+    {
+      "path": "tools/run_unified_md_comparison.py",
+      "sha256": "cae84214608685b597fdc34cc9237839cb38040ddcc27da4af63e1751c82463d"
+    },
+    {
+      "path": "tools/vace_material_video.py",
+      "sha256": "9b22438e9e67f98ca4a1fc0aa3018c4c98c61c5a3c9ee471785323630ace8c87"
+    }
+  ]
+}

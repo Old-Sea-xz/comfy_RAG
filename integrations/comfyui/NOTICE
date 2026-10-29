@@ -1,0 +1,6 @@
+ComfyUI queue integration
+
+The prompt_worker function is derived from ComfyUI, published by its contributors
+under GNU GPL version 3 (see LICENSE). Upstream revision is recorded in upstream.json.
+The two queue cleanup/recovery helpers and the installation script implement the
+local queue extension. This integration does not include model weights or custom nodes.

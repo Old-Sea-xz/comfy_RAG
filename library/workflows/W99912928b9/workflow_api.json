@@ -1,0 +1,54 @@
+{
+  "1": {
+    "class_type": "VHS_LoadVideo",
+    "inputs": {
+      "video": "INPUT_VIDEO.mp4",
+      "force_rate": 25.0,
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "format": "None"
+    }
+  },
+  "2": {
+    "class_type": "LineArtPreprocessor",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "coarse": "disable",
+      "resolution": 576
+    }
+  },
+  "3": {
+    "class_type": "ImageInvert",
+    "inputs": {
+      "image": [
+        "2",
+        0
+      ]
+    }
+  },
+  "4": {
+    "class_type": "VHS_VideoCombine",
+    "inputs": {
+      "images": [
+        "3",
+        0
+      ],
+      "audio": [
+        "1",
+        2
+      ],
+      "frame_rate": 25.0,
+      "loop_count": 0,
+      "filename_prefix": "style_transfer_video_lineart",
+      "format": "video/h264-mp4",
+      "pingpong": false,
+      "save_output": true
+    }
+  }
+}

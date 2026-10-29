@@ -1,0 +1,178 @@
+{
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyRouter/seam_refinement_sdxl_inpaint",
+      "images": [
+        "50",
+        0
+      ]
+    }
+  },
+  "17": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "31": {
+    "class_type": "DiffusersLoader",
+    "inputs": {
+      "model_path": "stable-diffusion-xl-1.0-inpainting-0.1"
+    }
+  },
+  "23": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "seamless pale green woven placemat and red patterned tablecloth texture, natural lighting",
+      "clip": [
+        "31",
+        1
+      ]
+    }
+  },
+  "46": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "wine glass, glass, goblet, stemware, object, blur, smear, distortion",
+      "clip": [
+        "31",
+        1
+      ]
+    }
+  },
+  "38": {
+    "class_type": "InpaintModelConditioning",
+    "inputs": {
+      "positive": [
+        "23",
+        0
+      ],
+      "negative": [
+        "46",
+        0
+      ],
+      "pixels": [
+        "17",
+        0
+      ],
+      "vae": [
+        "31",
+        2
+      ],
+      "mask": [
+        "47",
+        0
+      ],
+      "noise_mask": true
+    }
+  },
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 0,
+      "steps": 25,
+      "cfg": 5.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.45,
+      "model": [
+        "31",
+        0
+      ],
+      "positive": [
+        "38",
+        0
+      ],
+      "negative": [
+        "38",
+        1
+      ],
+      "latent_image": [
+        "38",
+        2
+      ]
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "31",
+        2
+      ]
+    }
+  },
+  "48": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "17",
+        0
+      ]
+    }
+  },
+  "49": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "image": [
+        "8",
+        0
+      ],
+      "upscale_method": "bicubic",
+      "width": [
+        "48",
+        0
+      ],
+      "height": [
+        "48",
+        1
+      ],
+      "crop": "disabled"
+    }
+  },
+  "47": {
+    "class_type": "LoadImageMask",
+    "inputs": {
+      "image": "INPUT_MASK.png",
+      "channel": "red"
+    }
+  },
+  "51": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "47",
+        0
+      ],
+      "left": 6,
+      "top": 6,
+      "right": 6,
+      "bottom": 6
+    }
+  },
+  "50": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "17",
+        0
+      ],
+      "source": [
+        "49",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "mask": [
+        "51",
+        0
+      ]
+    }
+  }
+}

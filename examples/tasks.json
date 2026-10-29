@@ -1,0 +1,13 @@
+{
+  "example_001": {
+    "instruction": "Generate a watercolor illustration of a small sailboat on a calm lake at sunrise.",
+    "modality": "t2i",
+    "category": "vanilla",
+    "resources": [],
+    "input_types": [],
+    "evaluation_criteria": [
+      "The image depicts a small sailboat on a calm lake at sunrise.",
+      "The image has a recognizable watercolor appearance."
+    ]
+  }
+}

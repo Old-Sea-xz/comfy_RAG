@@ -1,0 +1,407 @@
+{
+  "1": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "INPUT_VIDEO.mp4"
+    }
+  },
+  "2": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "1",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "2",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "4": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "3",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "megapixels": 0.5,
+      "resolution_steps": 1
+    }
+  },
+  "5": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "4",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-base-4b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "7": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "8": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    }
+  },
+  "9": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Transform the visible speaker in this exact frame into a photorealistic attractive adult woman who will be the target performer. Keep a clear front-facing human face with a relaxed neutral expression suitable for portrait animation. Preserve the original head pose, camera angle, crop, body position, lighting, and background composition. Produce one coherent person with natural facial anatomy, relaxed eyes and mouth, and realistic detail.",
+      "clip": [
+        "7",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "child, minor, multiple people, obscured face, profile-only face, changed pose, changed camera angle, changed crop, changed background, deformed face, asymmetrical eyes, duplicate features, wide eyes, grimace, open mouth, tense expression, cartoon, illustration, text, watermark, blurry",
+      "clip": [
+        "7",
+        0
+      ]
+    }
+  },
+  "11": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "4",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "9",
+        0
+      ],
+      "latent": [
+        "11",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": [
+        "10",
+        0
+      ],
+      "latent": [
+        "11",
+        0
+      ]
+    }
+  },
+  "14": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "15": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 20,
+      "width": [
+        "5",
+        0
+      ],
+      "height": [
+        "5",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5.0,
+      "model": [
+        "6",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "13",
+        0
+      ]
+    }
+  },
+  "17": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 18520260918
+    }
+  },
+  "18": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "17",
+        0
+      ],
+      "guider": [
+        "16",
+        0
+      ],
+      "sampler": [
+        "14",
+        0
+      ],
+      "sigmas": [
+        "15",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    }
+  },
+  "19": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "18",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "HMFaceToolkitsLoader",
+    "inputs": {
+      "gpu_id": 0,
+      "deployment": "huggingface"
+    }
+  },
+  "21": {
+    "class_type": "GetFaceLandmarks",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "19",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "GetFaceLandmarks",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "29",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "GetHeadPose",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "19",
+        0
+      ],
+      "landmarks": [
+        "21",
+        0
+      ],
+      "crop": true
+    }
+  },
+  "24": {
+    "class_type": "GetHeadPose",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "29",
+        0
+      ],
+      "landmarks": [
+        "22",
+        0
+      ],
+      "crop": true
+    }
+  },
+  "25": {
+    "class_type": "GetExpression2",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "19",
+        0
+      ],
+      "landmarks": [
+        "21",
+        0
+      ]
+    }
+  },
+  "26": {
+    "class_type": "GetExpression2",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "29",
+        0
+      ],
+      "landmarks": [
+        "22",
+        0
+      ]
+    }
+  },
+  "27": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "31",
+        0
+      ],
+      "fps": 8.0,
+      "audio": [
+        "2",
+        1
+      ],
+      "bit_depth": [
+        "2",
+        3
+      ],
+      "color_space": [
+        "2",
+        4
+      ]
+    }
+  },
+  "28": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "27",
+        0
+      ],
+      "filename_prefix": "speaking_motion_clone_hellomeme_v5",
+      "format": "mp4",
+      "codec": "h264"
+    }
+  },
+  "29": {
+    "class_type": "VHS_LoadVideo",
+    "inputs": {
+      "video": "INPUT_VIDEO.mp4",
+      "force_rate": 8.0,
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "format": "None"
+    }
+  },
+  "30": {
+    "class_type": "HMVideoPipelineLoader",
+    "inputs": {
+      "checkpoint": "[preset]RealisticVisionV60B1",
+      "lora": "None",
+      "vae": "same as checkpoint",
+      "version": "v5",
+      "stylize": "x1",
+      "deployment": "huggingface",
+      "lora_scale": 1.0,
+      "dtype": "fp16"
+    }
+  },
+  "31": {
+    "class_type": "HMPipelineVideo",
+    "inputs": {
+      "hm_video_pipeline": [
+        "30",
+        0
+      ],
+      "ref_head_pose": [
+        "23",
+        0
+      ],
+      "ref_expression": [
+        "25",
+        0
+      ],
+      "drive_head_pose": [
+        "24",
+        0
+      ],
+      "drive_expression": [
+        "26",
+        0
+      ],
+      "trans_ratio": 0.0,
+      "patch_overlap": 4,
+      "prompt": "photorealistic beautiful young adult woman speaking naturally, consistent identity, natural skin, accurate lips and facial expression",
+      "negative_prompt": "deformed face, malformed mouth, duplicate features, asymmetrical anatomy, identity drift, flicker, jitter, blur, cartoon, illustration, text, watermark",
+      "steps": 25,
+      "seed": 18520261004,
+      "guidance_scale": 1.5,
+      "gpu_id": 0
+    }
+  }
+}

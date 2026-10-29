@@ -1,0 +1,126 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "2": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "CreateShapeMask",
+    "inputs": {
+      "shape": "circle",
+      "frames": 1,
+      "location_x": 256,
+      "location_y": 192,
+      "grow": 0,
+      "frame_width": [
+        "2",
+        0
+      ],
+      "frame_height": [
+        "2",
+        1
+      ],
+      "shape_width": 256,
+      "shape_height": 320
+    }
+  },
+  "4": {
+    "class_type": "CreateShapeMask",
+    "inputs": {
+      "shape": "circle",
+      "frames": 1,
+      "location_x": 256,
+      "location_y": 288,
+      "grow": 0,
+      "frame_width": [
+        "2",
+        0
+      ],
+      "frame_height": [
+        "2",
+        1
+      ],
+      "shape_width": 208,
+      "shape_height": 304
+    }
+  },
+  "5": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "3",
+        0
+      ],
+      "source": [
+        "4",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "subtract"
+    }
+  },
+  "8": {
+    "class_type": "MaskRectAreaAdvanced",
+    "inputs": {
+      "x": 176,
+      "y": 176,
+      "width": 160,
+      "height": 48,
+      "image_width": [
+        "2",
+        0
+      ],
+      "image_height": [
+        "2",
+        1
+      ],
+      "blur_radius": 0
+    }
+  },
+  "9": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "5",
+        0
+      ],
+      "source": [
+        "8",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "add"
+    }
+  },
+  "6": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "9",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyRouter/protected_placement_mask",
+      "images": [
+        "6",
+        0
+      ]
+    }
+  }
+}

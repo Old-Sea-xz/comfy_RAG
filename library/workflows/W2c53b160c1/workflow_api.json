@@ -1,0 +1,468 @@
+{
+  "22": {
+    "class_type": "ImageGridComposite2x2",
+    "inputs": {
+      "image1": [
+        "46",
+        0
+      ],
+      "image2": [
+        "54",
+        0
+      ],
+      "image3": [
+        "31",
+        0
+      ],
+      "image4": [
+        "62",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "comic_strip_4_panel",
+      "images": [
+        "22",
+        0
+      ]
+    }
+  },
+  "26": {
+    "class_type": "PrimitiveStringMultiline",
+    "inputs": {
+      "value": "A single square comic-book panel, straight-on close-up of one modern smartphone held vertically in the hands of the same adult man with short dark hair and blue pajamas while he lies in bed. The phone is centered, upright, and fills most of the frame. Its clean white screen faces the viewer and displays exactly the word SUNDAY in seven crisp bold black capital letters, without punctuation, dots, hyphens, or spaces. The word is small and centered with generous blank white space around it. Blue pajama sleeves and a softly drawn modern bedroom appear only near the outer edges. Clean ink linework, polished colors, high-quality comic illustration. No other words, numbers, icons, captions, speech bubbles, logos, or watermarks."
+    }
+  },
+  "27": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "TBG Flux2 Sampler"
+    }
+  },
+  "28": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 32,
+      "width": 1024,
+      "height": 1024
+    }
+  },
+  "29": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5,
+      "model": [
+        "34",
+        0
+      ],
+      "positive": [
+        "38",
+        0
+      ],
+      "negative": [
+        "33",
+        0
+      ]
+    }
+  },
+  "30": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "37",
+        0
+      ],
+      "guider": [
+        "29",
+        0
+      ],
+      "sampler": [
+        "27",
+        0
+      ],
+      "sigmas": [
+        "28",
+        0
+      ],
+      "latent_image": [
+        "32",
+        0
+      ]
+    }
+  },
+  "31": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "30",
+        0
+      ],
+      "vae": [
+        "36",
+        0
+      ]
+    }
+  },
+  "32": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "33": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "misspelled text, punctuation inside words, dots, periods, hyphens, spaces between letters, gibberish, extra words, extra letters, numbers, icons, app interface, captions, speech bubbles, logo, watermark, multiple phones, tiny phone, tilted phone, side view, obscured screen, cracked screen, glare",
+      "clip": [
+        "35",
+        0
+      ]
+    }
+  },
+  "34": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-base-4b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "35": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "36": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "flux2-vae.safetensors"
+    }
+  },
+  "37": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1671003
+    }
+  },
+  "38": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": [
+        "26",
+        0
+      ],
+      "clip": [
+        "35",
+        0
+      ]
+    }
+  },
+  "39": {
+    "class_type": "PrimitiveStringMultiline",
+    "inputs": {
+      "value": "A single square comic-book panel, medium-wide morning view of the same adult man with short dark hair wearing blue pajamas, just waking up and sitting groggily in a modern bed under white covers. He opens his eyes with a sleepy expression. Warm morning light, consistent modern bedroom, clean ink linework, polished colors, high-quality expressive comic illustration. One person only, no phone emphasized, no captions, no speech bubbles, no text, no panel borders."
+    }
+  },
+  "40": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": [
+        "39",
+        0
+      ],
+      "clip": [
+        "35",
+        0
+      ]
+    }
+  },
+  "41": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "42": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 32,
+      "width": 1024,
+      "height": 1024
+    }
+  },
+  "43": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5,
+      "model": [
+        "34",
+        0
+      ],
+      "positive": [
+        "40",
+        0
+      ],
+      "negative": [
+        "66",
+        0
+      ]
+    }
+  },
+  "44": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1671001
+    }
+  },
+  "45": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "44",
+        0
+      ],
+      "guider": [
+        "43",
+        0
+      ],
+      "sampler": [
+        "27",
+        0
+      ],
+      "sigmas": [
+        "42",
+        0
+      ],
+      "latent_image": [
+        "41",
+        0
+      ]
+    }
+  },
+  "46": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "45",
+        0
+      ],
+      "vae": [
+        "36",
+        0
+      ]
+    }
+  },
+  "47": {
+    "class_type": "PrimitiveStringMultiline",
+    "inputs": {
+      "value": "A single square comic-book panel, medium shot of the same adult man with short dark hair wearing blue pajamas, sitting in the same modern bed under white covers and looking closely at a smartphone held in both hands. The phone is visible naturally but its screen content is not readable. Consistent character, clothing, bedroom, and warm morning light, clean ink linework, polished colors, high-quality expressive comic illustration. One person only, no captions, no speech bubbles, no text, no panel borders."
+    }
+  },
+  "48": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": [
+        "47",
+        0
+      ],
+      "clip": [
+        "35",
+        0
+      ]
+    }
+  },
+  "49": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "50": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 32,
+      "width": 1024,
+      "height": 1024
+    }
+  },
+  "51": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5,
+      "model": [
+        "34",
+        0
+      ],
+      "positive": [
+        "48",
+        0
+      ],
+      "negative": [
+        "66",
+        0
+      ]
+    }
+  },
+  "52": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1671002
+    }
+  },
+  "53": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "52",
+        0
+      ],
+      "guider": [
+        "51",
+        0
+      ],
+      "sampler": [
+        "27",
+        0
+      ],
+      "sigmas": [
+        "50",
+        0
+      ],
+      "latent_image": [
+        "49",
+        0
+      ]
+    }
+  },
+  "54": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "53",
+        0
+      ],
+      "vae": [
+        "36",
+        0
+      ]
+    }
+  },
+  "55": {
+    "class_type": "PrimitiveStringMultiline",
+    "inputs": {
+      "value": "A single square comic-book panel, medium-wide view of the same adult man with short dark hair wearing blue pajamas, lying back comfortably in the same modern bed under white covers after checking his phone. His eyes are closed with a relaxed content expression, and the smartphone rests nearby. Consistent character, clothing, bedroom, and warm morning light, clean ink linework, polished colors, high-quality expressive comic illustration. One person only, no captions, no speech bubbles, no text, no panel borders."
+    }
+  },
+  "56": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": [
+        "55",
+        0
+      ],
+      "clip": [
+        "35",
+        0
+      ]
+    }
+  },
+  "57": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "58": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 32,
+      "width": 1024,
+      "height": 1024
+    }
+  },
+  "59": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 5,
+      "model": [
+        "34",
+        0
+      ],
+      "positive": [
+        "56",
+        0
+      ],
+      "negative": [
+        "66",
+        0
+      ]
+    }
+  },
+  "60": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1671004
+    }
+  },
+  "61": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "60",
+        0
+      ],
+      "guider": [
+        "59",
+        0
+      ],
+      "sampler": [
+        "27",
+        0
+      ],
+      "sigmas": [
+        "58",
+        0
+      ],
+      "latent_image": [
+        "57",
+        0
+      ]
+    }
+  },
+  "62": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "61",
+        0
+      ],
+      "vae": [
+        "36",
+        0
+      ]
+    }
+  },
+  "66": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "low quality, blurry, distorted anatomy, extra limbs, extra fingers, duplicate person, multiple people, collage, split screen, inset image, panel border, captions, speech bubbles, pseudo-text, gibberish, watermark, logo",
+      "clip": [
+        "35",
+        0
+      ]
+    }
+  }
+}

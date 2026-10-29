@@ -1,0 +1,241 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "2": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux1-dev-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "3": {
+    "class_type": "DualCLIPLoader",
+    "inputs": {
+      "clip_name1": "t5xxl_fp16.safetensors",
+      "clip_name2": "clip_l.safetensors",
+      "type": "flux"
+    }
+  },
+  "4": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
+  "9": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "photorealistic portrait edit of the same recognizable adult person transformed into a beautiful woman with clearly feminine facial presentation, a softer jawline, subtle natural makeup, and long dark hair tied into a clearly visible ponytail; preserve the recognizable eye shape, nose, mouth, skin tone, apparent age, ethnicity, expression, pose, clothing, framing, and background",
+      "clip": [
+        "3",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "male, masculine appearance, short hair, cropped hair, no ponytail, facial hair, different person, identity replacement, face swap, changed age, changed skin tone, changed ethnicity, changed pose, changed composition, distorted face, asymmetrical eyes, extra fingers, duplicate features, cartoon, illustration, low quality, blurry, deformed",
+      "clip": [
+        "3",
+        0
+      ]
+    }
+  },
+  "11": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "1",
+        0
+      ],
+      "vae": [
+        "4",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "18",
+        0
+      ],
+      "positive": [
+        "9",
+        0
+      ],
+      "negative": [
+        "10",
+        0
+      ],
+      "latent_image": [
+        "25",
+        0
+      ],
+      "seed": 123456789,
+      "steps": 32,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.92
+    }
+  },
+  "13": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "12",
+        0
+      ],
+      "vae": [
+        "4",
+        0
+      ]
+    }
+  },
+  "14": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "24",
+        0
+      ],
+      "filename_prefix": "gender_swap_flux_identity"
+    }
+  },
+  "15": {
+    "class_type": "PulidFluxModelLoader",
+    "inputs": {
+      "pulid_file": "pulid_flux_v0.9.1.safetensors"
+    }
+  },
+  "16": {
+    "class_type": "PulidFluxEvaClipLoader",
+    "inputs": {}
+  },
+  "17": {
+    "class_type": "PulidFluxInsightFaceLoader",
+    "inputs": {
+      "provider": "CUDA"
+    }
+  },
+  "18": {
+    "class_type": "ApplyPulidFlux",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "pulid_flux": [
+        "15",
+        0
+      ],
+      "eva_clip": [
+        "16",
+        0
+      ],
+      "face_analysis": [
+        "17",
+        0
+      ],
+      "image": [
+        "1",
+        0
+      ],
+      "weight": 0.5,
+      "start_at": 0.3,
+      "end_at": 0.85,
+      "attn_mask": [
+        "20",
+        0
+      ]
+    }
+  },
+  "19": {
+    "class_type": "LoadImageMask",
+    "inputs": {
+      "image": "INPUT_MASK.png",
+      "channel": "red"
+    }
+  },
+  "20": {
+    "class_type": "GrowMask",
+    "inputs": {
+      "mask": [
+        "19",
+        0
+      ],
+      "expand": 600,
+      "tapered_corners": true
+    }
+  },
+  "21": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "20",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "ImageBlur",
+    "inputs": {
+      "image": [
+        "21",
+        0
+      ],
+      "blur_radius": 15,
+      "sigma": 6.0
+    }
+  },
+  "23": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "22",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "24": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "1",
+        0
+      ],
+      "source": [
+        "13",
+        0
+      ],
+      "mask": [
+        "23",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false
+    }
+  },
+  "25": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "11",
+        0
+      ],
+      "mask": [
+        "20",
+        0
+      ]
+    }
+  }
+}

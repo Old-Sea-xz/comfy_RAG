@@ -1,0 +1,54 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  },
+  "2": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "MaskRectAreaAdvanced",
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "width": 64,
+      "height": 64,
+      "image_width": [
+        "2",
+        0
+      ],
+      "image_height": [
+        "2",
+        1
+      ],
+      "blur_radius": 2
+    }
+  },
+  "4": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "3",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyRouter/addition_placement_mask",
+      "images": [
+        "4",
+        0
+      ]
+    }
+  }
+}

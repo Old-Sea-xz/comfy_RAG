@@ -1,0 +1,219 @@
+{
+  "1": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "INPUT_VIDEO.mp4"
+    }
+  },
+  "2": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "1",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "HMFaceToolkitsLoader",
+    "inputs": {
+      "gpu_id": 0,
+      "deployment": "huggingface"
+    }
+  },
+  "21": {
+    "class_type": "GetFaceLandmarks",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "32",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "GetFaceLandmarks",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "29",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "GetHeadPose",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "32",
+        0
+      ],
+      "landmarks": [
+        "21",
+        0
+      ],
+      "crop": true
+    }
+  },
+  "24": {
+    "class_type": "GetHeadPose",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "29",
+        0
+      ],
+      "landmarks": [
+        "22",
+        0
+      ],
+      "crop": true
+    }
+  },
+  "25": {
+    "class_type": "GetExpression2",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "32",
+        0
+      ],
+      "landmarks": [
+        "21",
+        0
+      ]
+    }
+  },
+  "26": {
+    "class_type": "GetExpression2",
+    "inputs": {
+      "face_toolkits": [
+        "20",
+        0
+      ],
+      "images": [
+        "29",
+        0
+      ],
+      "landmarks": [
+        "22",
+        0
+      ]
+    }
+  },
+  "27": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "31",
+        0
+      ],
+      "fps": 8,
+      "audio": [
+        "2",
+        1
+      ],
+      "bit_depth": [
+        "2",
+        3
+      ],
+      "color_space": [
+        "2",
+        4
+      ]
+    }
+  },
+  "28": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "27",
+        0
+      ],
+      "filename_prefix": "speaking_motion_clone_hellomeme_v5",
+      "format": "mp4",
+      "codec": "h264"
+    }
+  },
+  "29": {
+    "class_type": "VHS_LoadVideo",
+    "inputs": {
+      "video": "INPUT_VIDEO.mp4",
+      "force_rate": 8,
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "format": "None"
+    }
+  },
+  "30": {
+    "class_type": "HMVideoPipelineLoader",
+    "inputs": {
+      "checkpoint": "[preset]RealisticVisionV60B1",
+      "lora": "None",
+      "vae": "same as checkpoint",
+      "version": "v5",
+      "stylize": "x1",
+      "deployment": "huggingface",
+      "lora_scale": 1,
+      "dtype": "fp16"
+    }
+  },
+  "31": {
+    "class_type": "HMPipelineVideo",
+    "inputs": {
+      "hm_video_pipeline": [
+        "30",
+        0
+      ],
+      "ref_head_pose": [
+        "23",
+        0
+      ],
+      "ref_expression": [
+        "25",
+        0
+      ],
+      "drive_head_pose": [
+        "24",
+        0
+      ],
+      "drive_expression": [
+        "26",
+        0
+      ],
+      "trans_ratio": 0,
+      "patch_overlap": 4,
+      "prompt": "photorealistic beautiful young adult woman speaking naturally, consistent identity, natural skin, accurate lips and facial expression",
+      "negative_prompt": "deformed face, malformed mouth, duplicate features, asymmetrical anatomy, identity drift, flicker, jitter, blur, cartoon, illustration, text, watermark",
+      "steps": 25,
+      "seed": 18520261004,
+      "guidance_scale": 1.5,
+      "gpu_id": 0
+    }
+  },
+  "32": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "INPUT_IMAGE.png"
+    }
+  }
+}
